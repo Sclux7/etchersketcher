@@ -14,8 +14,14 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 screen.fill((92, 16, 199))
 pygame.display.set_caption("etchersketcher")
 
+colour1 = pygame.Color(215, 186, 255)
+colour2 = pygame.Color(199, 16, 32)
+colour3 = pygame.Color(123, 199, 16)
+colour4 = pygame.Color(16, 199, 183)
+
 draw_speed_max = 10 # this will change depending on how far the stick is moved
-draw_colour = pygame.Color(215, 186, 255) # (123, 199, 16)
+draw_colour = [colour1, colour2, colour3, colour4] # (123, 199, 16)
+draw_colour_index = 0
 draw_position = [600, 400]
 draw_dir = ''
 draw_change_dir = draw_dir
@@ -65,7 +71,7 @@ while running:
             if draw_change_dir == 'right':
                 draw_position[0] += 1
 
-            pygame.draw.rect(screen, draw_colour, (draw_position[0], draw_position[1], draw_size, draw_size))
+            pygame.draw.rect(screen, draw_colour[draw_colour_index], (draw_position[0], draw_position[1], draw_size, draw_size))
 
         elif event.type == pygame.JOYBUTTONDOWN:
             if event.button == 0:
@@ -86,6 +92,8 @@ while running:
                 randompixels = remove_random()
                 for pixel in randompixels:
                     screen.set_at(pixel, (92, 16, 199))
+            if event.button == 2:
+                draw_colour_index = (draw_colour_index + 1) % len(draw_colour)
         elif event.type == pygame.JOYBUTTONUP:
             if event.button == 1:
                 remove_mode = False
